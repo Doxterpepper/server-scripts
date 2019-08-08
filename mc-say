@@ -1,0 +1,2 @@
+#!/bin/bash
+minecraftd command say $1

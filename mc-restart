@@ -1,0 +1,47 @@
+#!/bin/bash
+WORLD_PATH='/srv/minecraft/world'
+BACKUP_PATH='/backup/minecraft'
+
+function say () {
+    minecraftd command say $1
+}
+
+function pruge_old_backups () {
+    # Only log what would be purged at first
+    log_file='file_to_purge.log'
+    for file in $(find /backup/minecraft/* -mtime +5)
+    do
+        echo $(date) >> "/srv/minecraft/logs/$log_file"
+        echo $file >> "/srv/minecraft/logs/$log_file"
+	echo >> "/srv/minecraft/logs/$log_file"
+    done
+}
+
+function backup_server() {
+    tar -cvjf "$BACKUP_PATH/$(date '+%d-%m-%Y_%H_%M_%S').tar.gz" $WORLD_PATH
+}
+
+# Warn per minute
+for time in $(seq 5 -1 1)
+do
+    say "==============================="
+    say "SERVER GOING DOWN IN $time MINUTES"
+    say "==============================="
+    sleep 60
+done
+
+# Warn per second
+for time in $(seq 5 -1 1)
+do
+    say "SERVER RESTART IN T-$time"
+    sleep 1
+done
+
+say "SERVER GOING DOWN FOR MAINTANECE, WILL BE BACK SOON"
+sleep 5 # Give them time to see this
+
+minecraftd command stop
+backup_server
+purge_old_backups
+sleep 5 # Needs a delay between stopping and starting the server
+minecraftd start
