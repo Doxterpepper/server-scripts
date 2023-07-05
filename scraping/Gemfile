@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+
+gem 'unf_ext', '~> 0.0.8.2'
+gem 'rest-client'
+#gem 'mime-types', '~> 3.4', '>= 3.4.1'
+#gem 'mime-types-data', '~> 3.2023', '>= 3.2023.0218.1'
+gem 'nokogiri', '~> 1.15', '>= 1.15.2'
+gem 'thread'
