@@ -5,7 +5,7 @@ require 'rest-client'
 install_path = '/srv/minecraft'
 
 mc_current_file = '/srv/minecraft/.mc_current_version.txt'
-current_version = '0.0.0'
+current_version = '0.0.0' # Default no version
 
 if File.exists? mc_current_file
   File.open mc_current_file, 'r' do |f|
