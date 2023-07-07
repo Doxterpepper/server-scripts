@@ -1,0 +1,95 @@
+<html>
+  <header>
+    <script
+    src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
+    integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE="
+    crossorigin="anonymous"></script>
+
+    <script>
+      (function($){
+        $(function(){
+          $('.error').hide()
+          $('.match-error').hide()
+        });
+
+        // Run right away
+      })(jQuery);
+
+      function sendSignupRequest(data) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/" + accessToken(), true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+      }
+
+      function accessToken() {
+        let currentUrl = window.location.href;
+        let splitPath = currentUrl.split('/');
+        return splitPath[splitPath.length - 1];
+      }
+
+      function signup() {
+        $('.error').hide();
+        $('.match-error').hide();
+        $('.invalid-password').hide();
+
+        dataMap = {}
+        let values = $("form#register").serializeArray();
+        values.forEach(element => dataMap[element.name] = element.value);
+
+        if (dataMap.password != dataMap.repassword) {
+          $('.error').show()
+          $('.match-error').show()
+        } else if (dataMap.password.length < 5) {
+          $('.error').show()
+          $('.invalid-password').show()
+        } else {
+          sendSignupRequest(dataMap);
+          console.log('success');
+        }
+      }
+    </script>
+  </header>
+
+  <body>
+    <section>
+      <h1>Welcome to nobone.zone, create your username and password here</h1>
+    </section>
+    <section>
+      <span class="error" hidden>
+        <label class="match-error" hidden>Passwords don't match</label>
+        <label class="invalid-password" hidden>Password must be at least 5 characters long</label>
+      </span>
+      <form id="register" class='register' action=/ name="register">
+        <span>
+          <label>Username:</label>
+          <input id='username' type='text' name='username'>
+        </span>
+
+        <span>
+          <label>Password: </label>
+          <input id="password" type="password" name="password">
+        </span>
+        <span>
+          <label>Retype Password: </label>
+          <input id="repassword" type="password" name="repassword">
+        </span>
+        
+        <input onclick="signup()" type='button' name='submit' value='submit'>
+      </form>
+    </section>
+  </body>
+  <style>
+    form.register {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .error {
+      background-color: rgb(255, 122, 122);
+      color: white;
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+    }
+  </style>
+</html>

@@ -27,13 +27,15 @@ module UserManagement
   def self.create_user(username, password)
     begin
       @user_management.each do |user_type|
-        user_type.create_user(username, password)
+        user_type.add_user(username, password)
       end
-    rescue
+    rescue StandardError => error
+      puts error
       puts("Failed to create user #{username}, rolling back")
       @user_management.each do |user_type|
         user_type.delete_user(username) if user_type.exists?(username)
       end
+      raise
     end
   end
 

@@ -8,4 +8,4 @@ COPY Gemfile .
 RUN bundle install
 
 COPY . .
-CMD ruby main.rb
+CMD ruby web/main.rb

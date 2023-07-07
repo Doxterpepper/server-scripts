@@ -19,6 +19,16 @@ module UserManagement
     return tokens
   end
 
+  def self.delete_token(token)
+    query = 'DELETE FROM Tokens WHERE token = ?'
+
+    begin
+      db = SQLite3::Database.open('tokens.db')
+      db.execute(query, token)
+    ensure
+    end
+  end
+
   def self.check_token(token)
     token_result = get_token(token)
 
