@@ -11,7 +11,7 @@ module UserManagement
     @nginx_users,
   ]
 
-  def get_user_info(username)
+  def self.get_user_info(username)
     info = {}
     if @local_users.exists?(username)
       info['local_ftp'] = true
@@ -24,7 +24,7 @@ module UserManagement
     return info
   end
 
-  def create_user(username, password)
+  def self.create_user(username, password)
     begin
       @user_management.each do |user_type|
         user_type.create_user(username, password)
@@ -37,7 +37,7 @@ module UserManagement
     end
   end
 
-  def delete_user(username)
+  def self.delete_user(username)
     begin
       @user_management.each do |user_type|
         user_type.delete_user(username)
@@ -47,7 +47,7 @@ module UserManagement
     end
   end
 
-  def update_password(username, password)
+  def self.update_password(username, password)
     begin
       @user_management.each do |user_type|
         user_type.update_user(username, password)
